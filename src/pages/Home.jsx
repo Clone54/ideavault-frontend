@@ -30,17 +30,17 @@ export default function Home() {
     {
       title: "Share Your Vision with the World",
       description: "IdeaVault is the premier community for validating and growing your next big startup idea.",
-      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2850&q=80"
+      image: "/slide-1.png"
     },
     {
       title: "Discover the Next Big Thing",
       description: "Explore hundreds of innovative concepts across Tech, AI, Health, and Education.",
-      image: "https://images.unsplash.com/photo-1556761175-5973dc0f32d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2832&q=80"
+      image: "/slide-2.png"
     },
     {
       title: "Build Together",
       description: "Engage with creators, provide feedback, and join forces to turn ideas into reality.",
-      image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-4.0.3&auto=format&fit=crop&w=2970&q=80"
+      image: "/slide-3.png"
     }
   ];
 
