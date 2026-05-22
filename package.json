@@ -9,15 +9,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "firebase": "^12.13.0",
+    "@better-auth/infra": "^0.2.8",
+    "axios": "^1.16.1",
+    "better-auth": "^1.6.11",
     "lucide-react": "^0.546.0",
     "motion": "^12.23.24",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
     "react-hot-toast": "^2.6.0",
     "react-router-dom": "^7.15.1",
-    "swiper": "^12.1.4",
-    "axios": "^1.16.1"
+    "swiper": "^12.1.4"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.14",
