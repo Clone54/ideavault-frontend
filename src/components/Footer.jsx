@@ -40,10 +40,10 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Contact</h3>
             <ul className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
-              <li>hi@ideavault.com</li>
-              <li>+1 (555) 123-4567</li>
-              <li>123 Innovation Drive</li>
-              <li>Tech City, TC 90210</li>
+              <li>firozahmedshoykot44@gmail.com</li>
+              <li>+880 1871 528249</li>
+              <li>Jhargam-6596</li>
+              <li>Bagmara, Rajshahi</li>
             </ul>
           </div>
         </div>
