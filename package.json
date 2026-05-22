@@ -1,5 +1,6 @@
 {
   "name": "ideavault-frontend",
+  "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -8,21 +9,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "axios": "^1.16.1",
     "firebase": "^12.13.0",
     "lucide-react": "^0.546.0",
     "motion": "^12.23.24",
-    "framer-motion": "^12.40.0",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
     "react-hot-toast": "^2.6.0",
     "react-router-dom": "^7.15.1",
-    "swiper": "^12.1.4"
+    "swiper": "^12.1.4",
+    "axios": "^1.16.1"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.14",
     "@vitejs/plugin-react": "^5.0.4",
-    "tailwindcss": "^4.0.0",
+    "tailwindcss": "^4.1.14",
+    "typescript": "~5.8.2",
     "vite": "^6.2.3"
   }
 }
