@@ -1,5 +1,6 @@
-import React, { createContext, useContext } from 'react';
-import { authClient } from '../lib/auth-client';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { auth, googleProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut } from '../lib/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const AuthContext = createContext(null);
 
@@ -10,66 +11,90 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  // Use Better Auth's standard React hooks to watch session state
-  const { data: session, isPending, error } = authClient.useSession();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      try {
+        if (firebaseUser) {
+          const token = await firebaseUser.getIdToken();
+          
+          setUser({
+            ...firebaseUser,
+            displayName: firebaseUser.displayName,
+            photoURL: firebaseUser.photoURL,
+            email: firebaseUser.email,
+            uid: firebaseUser.uid,
+            token
+          });
+        } else {
+          setUser(null);
+        }
+      } catch (e) {
+        console.error("Failed to fetch session", e);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const loginWithGoogle = async () => {
-    await authClient.signIn.social({
-      provider: "google",
-      callbackURL: "/dashboard",
-    });
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      return result;
+    } catch (error) {
+      throw error;
+    }
   };
 
-  const register = async (email, password, name, photo) => {
-    await authClient.signUp.email({
-      email,
-      password,
-      name,
-      image: photo,
-      callbackURL: "/dashboard",
-    });
+  const register = async (email, pass, name, photo) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+      await updateProfile(userCredential.user, {
+        displayName: name || "Anonymous",
+        photoURL: photo || ""
+      });
+      setUser({
+        ...userCredential.user,
+        displayName: name || "Anonymous",
+        photoURL: photo || "",
+        uid: userCredential.user.uid
+      });
+    } catch (error) {
+       throw error;
+    }
   };
 
-  const login = async (email, password) => {
-    await authClient.signIn.email({
-      email,
-      password,
-      callbackURL: "/dashboard",
-    });
+  const login = async (email, pass) => {
+    return await signInWithEmailAndPassword(auth, email, pass);
   };
 
   const updateUserProfile = async (name, photoURL) => {
-    await authClient.user.update({
-      name: name,
-      image: photoURL,
-    });
+    if (auth.currentUser) {
+      await updateProfile(auth.currentUser, {
+        displayName: name,
+        photoURL: photoURL
+      });
+      setUser({
+        ...user,
+        displayName: name,
+        photoURL: photoURL
+      });
+    }
   };
 
   const logout = async () => {
-    await authClient.signOut({
-      callbackURL: "/login"
-    });
+    await signOut(auth);
+    setUser(null);
   };
 
-  // Standardized normalization map so you don't have to rewrite your profile view UI components
-  const normalizedUser = session ? {
-    email: session.user.email,
-    displayName: session.user.name,
-    photoURL: session.user.image,
-    uid: session.user.id
-  } : null;
-
   return (
-    <AuthContext.Provider value={{ 
-      user: normalizedUser, 
-      loading: isPending, 
-      loginWithGoogle, 
-      register, 
-      login, 
-      logout, 
-      updateUserProfile 
-    }}>
-      {!isPending && children}
+    <AuthContext.Provider value={{ user, loading, loginWithGoogle, register, login, logout, updateUserProfile }}>
+      {children}
     </AuthContext.Provider>
   );
 };
